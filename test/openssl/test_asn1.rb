@@ -482,6 +482,11 @@ class  OpenSSL::TestASN1 < OpenSSL::TestCase
     assert_raise(OpenSSL::ASN1::ASN1Error) { obj.to_der }
   end
 
+  def test_raw_universal_asn1data
+    assert_raise(OpenSSL::ASN1::ASN1Error) { OpenSSL::ASN1::ASN1Data.new(B(%w{}), 1, :UNIVERSAL) } # ASN1.boolean can't have encoded string
+    assert_raise(OpenSSL::ASN1::ASN1Error) { OpenSSL::ASN1::ASN1Data.new(B(%w{}), 2, :UNIVERSAL) } # ASN1.integer can't have encoded string
+  end
+
   def test_basic_primitive
     encode_test B(%w{ 00 00 }), OpenSSL::ASN1::Primitive.new(B(%w{}), 0)
     encode_test B(%w{ 01 00 }), OpenSSL::ASN1::Primitive.new(B(%w{}), 1, nil, :UNIVERSAL)
